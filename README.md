@@ -20,9 +20,14 @@
 |![](https://avatars.githubusercontent.com/u/147026593?v=4)|![](https://avatars.githubusercontent.com/u/137499604?v=4)|
 # 📜 UI설계도 & ERDcloud
 
+### UI 설계
 [UI설계도](https://ovenapp.io/view/KhSbBScGvstrv5EjFvRovhfeEKN5ROvK/L2kPB) - 카카오 오븐을 사용하였습니다.
 
-ERDcloud()
+### ERD 다이어그램 
+![ERD그램](/images/ERD.png)
+
+### 플로우 차트
+![플로우차트](/images/플로우%20차트.png)
 
 # 📋 기능 명세서
 ## 메인 페이지
