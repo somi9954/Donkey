@@ -21,7 +21,7 @@ import java.io.IOException;
 public class CustomJwtFilter extends GenericFilterBean {
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private final gotogym.configs.jwt.TokenProvider tokenProvider;
+    private final org.project.donkey.configs.jwt.TokenProvider tokenProvider;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
