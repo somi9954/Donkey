@@ -1,5 +1,6 @@
 package org.project.donkey.repositories;
 
+import com.querydsl.core.BooleanBuilder;
 import org.apache.tomcat.jni.FileInfo;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
