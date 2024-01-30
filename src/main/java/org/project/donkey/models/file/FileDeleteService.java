@@ -1,8 +1,9 @@
 package org.project.donkey.models.file;
 
 import lombok.RequiredArgsConstructor;
-import org.project.donkey.commons.MemberUtil;
+import org.apache.coyote.BadRequestException;
 import org.project.donkey.commons.exceptions.AuthorizationException;
+import org.project.donkey.configs.jwt.CustomJwtFilter;
 import org.project.donkey.entities.FileInfo;
 import org.project.donkey.entities.Member;
 import org.project.donkey.repositories.FileInfoRepository;
@@ -18,8 +19,8 @@ import java.util.List;
  * 파일 삭제를 수행하는 서비스 클래스.
  */
 public class FileDeleteService {
-    private final MemberUtil memberUtil; // 회원 관련 유틸리티 클래스
-    private final org.koreait.models.file.FileInfoService infoService; // 파일 정보 조회 서비스
+    private final CustomJwtFilter customJwtFilter; // 회원 관련 유틸리티 클래스
+    private final org.project.donkey.models.file.FileInfoService infoService; // 파일 정보 조회 서비스
     private final FileInfoRepository repository; // 파일 정보 저장소
 
     /**
@@ -31,14 +32,14 @@ public class FileDeleteService {
 
         /** 파일 삭제 권한 체크 S */
         String createdBy = item.getCreatedBy(); // 파일 업로드한 사용자 아이디
-        Member member = memberUtil.getMember(); // 현재 로그인한 회원 정보 조회
+        Member member = CustomJwtFilter.getMember(); // 현재 로그인한 회원 정보 조회
 
         // 파일을 업로드한 사용자와 현재 로그인한 회원이 같은지, 또는 관리자 권한인지 확인
-        if (createdBy != null && !createdBy.isBlank() && !memberUtil.isAdmin()
-                && (!memberUtil.isLogin()
-                || (memberUtil.isLogin() && !member.getEmail().equals(createdBy)))) {
+        if (createdBy != null && !createdBy.isBlank() && !customJwtFilter.isUserAdmin()
+                && (!customJwtFilter.isUserLoggedIn()
+                || (customJwtFilter.isUserLoggedIn() && !member.getEmail().equals(createdBy)))) {
 
-            throw new AuthorizationException("UnAuthorized.delete.file");
+            throw new BadRequestException("UnAuthorized.delete.file");
         }
         /** 파일 삭제 권한 체크 E */
 

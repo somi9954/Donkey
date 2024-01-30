@@ -1,4 +1,4 @@
-package org.project.donkey.controllers.boards;
+package org.project.donkey.api.boards;
 
 import lombok.RequiredArgsConstructor;
 import org.project.donkey.commons.validators.PasswordValidator;

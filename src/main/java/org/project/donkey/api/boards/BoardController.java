@@ -1,4 +1,4 @@
-package org.project.donkey.controllers.boards;
+package org.project.donkey.api.boards;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;

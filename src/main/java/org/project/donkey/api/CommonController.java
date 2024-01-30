@@ -1,4 +1,4 @@
-package org.project.donkey.controllers;
+package org.project.donkey.api;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

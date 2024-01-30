@@ -1,4 +1,4 @@
-package org.project.donkey.controllers.boards;
+package org.project.donkey.api.boards;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

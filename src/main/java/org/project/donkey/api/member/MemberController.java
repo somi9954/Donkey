@@ -1,4 +1,4 @@
-package org.project.donkey.controllers.member;
+package org.project.donkey.api.member;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

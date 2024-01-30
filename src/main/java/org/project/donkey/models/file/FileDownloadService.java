@@ -24,7 +24,7 @@ import java.io.IOException;
 public class FileDownloadService {
 
     private final HttpServletResponse response; // HTTP 응답 객체
-    private final org.koreait.models.file.FileInfoService infoService; // FileInfoService 객체
+    private final org.project.donkey.models.file.FileInfoService infoService; // FileInfoService 객체
 
     public void download(Long id) {
 
