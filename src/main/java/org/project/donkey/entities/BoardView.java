@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@IdClass(salad_a_zoom.entities.BoardViewId.class)
+@IdClass(org.project.donkey.entities.BoardViewId.class)
 public class BoardView {
     @Id
     private Long seq; // 게시글 번호
