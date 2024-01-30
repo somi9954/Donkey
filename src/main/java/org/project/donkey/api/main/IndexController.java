@@ -1,4 +1,4 @@
-package org.project.donkey.controllers.main;
+package org.project.donkey.api.main;
 
 import lombok.RequiredArgsConstructor;
 import org.project.donkey.commons.Utils;

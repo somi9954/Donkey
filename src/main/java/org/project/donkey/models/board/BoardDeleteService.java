@@ -3,6 +3,7 @@ package org.project.donkey.models.board;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.project.donkey.entities.BoardData;
+import org.project.donkey.models.file.FileDeleteService;
 import org.project.donkey.repositories.BoardDataRepository;
 import org.springframework.stereotype.Service;
 

@@ -7,6 +7,9 @@ import org.project.donkey.commons.Utils;
 import org.project.donkey.entities.BoardData;
 import org.project.donkey.entities.CommentData;
 import org.project.donkey.models.board.RequiredPasswordCheckException;
+import org.project.donkey.models.comment.CommentDeleteService;
+import org.project.donkey.models.comment.CommentInfoService;
+import org.project.donkey.models.comment.CommentSaveService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -45,7 +48,7 @@ public class CommentController{
         if (errors.hasErrors()) {
             Map<String, List<String>> messages = Utils.getMessages(errors);
             String message = (new ArrayList<List<String>>(messages.values())).get(0).get(0);
-            throw new AlertException(message);
+            throw new BadRequestException(message);
         }
 
         Long seq = form.getSeq();

@@ -1,4 +1,4 @@
-package org.project.donkey.controllers.member;
+package org.project.donkey.api.member;
 
 import lombok.RequiredArgsConstructor;
 import org.project.donkey.commons.validators.MobileValidator;

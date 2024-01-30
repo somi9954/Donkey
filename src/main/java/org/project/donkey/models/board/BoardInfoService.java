@@ -9,18 +9,30 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.koreait.commons.ListData;
-import org.koreait.commons.MemberUtil;
-import org.koreait.commons.Pagination;
-import org.koreait.commons.Utils;
-import org.koreait.controllers.boards.BoardDataSearch;
-import org.koreait.controllers.boards.BoardForm;
-import org.koreait.entities.*;
-import org.koreait.models.comment.CommentInfoService;
-import org.koreait.models.file.FileInfoService;
-import org.koreait.repositories.BoardDataRepository;
-import org.koreait.repositories.BoardViewRepository;
+import org.project.donkey.commons.ListData;
+import org.project.donkey.commons.MemberUtil;
+import org.project.donkey.commons.Pagination;
+import org.project.donkey.commons.Utils;
+import org.project.donkey.configs.jwt.CustomJwtFilter;
+import org.project.donkey.controllers.boards.BoardDataSearch;
+import org.project.donkey.controllers.boards.BoardForm;
+import org.project.donkey.entities.*;
+import org.project.donkey.models.comment.CommentInfoService;
+import org.project.donkey.models.file.FileInfoService;
+import org.project.donkey.repositories.BoardDataRepository;
+import org.project.donkey.repositories.BoardViewRepository;
 import org.modelmapper.ModelMapper;
+import org.project.donkey.api.boards.BoardDataSearch;
+import org.project.donkey.api.boards.BoardForm;
+import org.project.donkey.commons.ListData;
+import org.project.donkey.commons.Utils;
+import org.project.donkey.entities.BoardData;
+import org.project.donkey.entities.BoardView;
+import org.project.donkey.entities.Member;
+import org.project.donkey.models.comment.CommentInfoService;
+import org.project.donkey.models.file.FileInfoService;
+import org.project.donkey.repositories.BoardDataRepository;
+import org.project.donkey.repositories.BoardViewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +57,7 @@ public class BoardInfoService {
     private final FileInfoService fileInfoService;
     private final HttpServletRequest request;
     private final EntityManager em;
-    private final MemberUtil memberUtill;
+    private final CustomJwtFilter customJwtFilter;
     private final HttpSession session;
     private final PasswordEncoder encoder;
     private final Utils utils;
@@ -58,8 +70,8 @@ public class BoardInfoService {
      * @return
      */
     public int viewUid() {
-        return memberUtill.isLogin() ?
-                memberUtill.getMember().getUserNo().intValue() : utils.guestUid();
+        return customJwtFilter.isUserLoggedIn() ?
+                customJwtFilter.getEntity().getUserNo().intValue() : utils.guestUid();
     }
 
     /**

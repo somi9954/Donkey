@@ -1,6 +1,8 @@
 package org.project.donkey.models.member;
 
 import lombok.RequiredArgsConstructor;
+import org.project.donkey.api.member.JoinValidator;
+import org.project.donkey.api.member.RequestJoin;
 import org.project.donkey.commons.constants.MemberType;
 import org.project.donkey.entities.Member;
 import org.project.donkey.repositories.MemberRepository;
