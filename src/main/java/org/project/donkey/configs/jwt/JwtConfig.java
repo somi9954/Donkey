@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties(gotogym.configs.jwt.JwtProperties.class)
+@EnableConfigurationProperties(org.project.donkey.configs.jwt.JwtProperties.class)
 public class JwtConfig {
     @Bean
-    public gotogym.configs.jwt.TokenProvider tokenProvider(gotogym.configs.jwt.JwtProperties jwtProperties) {
-        return new gotogym.configs.jwt.TokenProvider(jwtProperties.getSecret(), jwtProperties.getAccessTokenValidityInSeconds());
+    public org.project.donkey.configs.jwt.TokenProvider tokenProvider(org.project.donkey.configs.jwt.JwtProperties jwtProperties) {
+        return new org.project.donkey.configs.jwt.TokenProvider(jwtProperties.getSecret(), jwtProperties.getAccessTokenValidityInSeconds());
     }
 }
