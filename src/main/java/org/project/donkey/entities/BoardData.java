@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.project.donkey.commons.constants.MemberType;
 
 import java.util.List;
 import java.util.UUID;

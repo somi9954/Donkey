@@ -74,7 +74,7 @@ public class TokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        MemberInfo memberInfo = (MemberInfo)memberInfoService.loadUserByUsername(claims.getSubject());
+                MemberInfo memberInfo = (MemberInfo)memberInfoService.loadUserByUsername(claims.getSubject());
         memberInfo.setAuthorities(authorities);
 
         return new UsernamePasswordAuthenticationToken(memberInfo, token, authorities);
