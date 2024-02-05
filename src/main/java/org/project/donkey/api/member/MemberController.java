@@ -21,14 +21,14 @@ public class MemberController implements CommonProcess {
     private final MemberSaveService saveService;
 
     @GetMapping("/join")
-    public String join(@ModelAttribute org.koreait.controllers.members.RequestJoin form, Model model) {
+    public String join(@ModelAttribute org.project.donkey.api.member.RequestJoin form, Model model) {
         commonProcess(model, Utils.getMessage("회원가입", "common"));
         
         return utils.tpl("member/join");
     }
 
     @PostMapping("/join")
-    public String joinPs(@Valid org.koreait.controllers.members.RequestJoin form, Errors errors, Model model) {
+    public String joinPs(@Valid org.project.donkey.api.member.RequestJoin form, Errors errors, Model model) {
         commonProcess(model, Utils.getMessage("회원가입", "common"));
 
         saveService.join(form, errors);

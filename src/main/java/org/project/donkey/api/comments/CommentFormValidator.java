@@ -10,7 +10,7 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class CommentFormValidator implements Validator, PasswordValidator {
+public class CommentFormValidator implements Validator {
 
     private final CustomJwtFilter jwtFilter;
 

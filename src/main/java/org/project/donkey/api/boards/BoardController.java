@@ -15,7 +15,6 @@ import org.project.donkey.models.board.*;
 import org.project.donkey.models.board.config.BoardConfigInfoService;
 import org.project.donkey.models.board.config.BoardNotFoundException;
 import org.project.donkey.models.comment.CommentInfoService;
-import org.project.donkey.models.comment.CommentNotFoundException;
 import org.project.donkey.models.file.FileInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -120,7 +119,6 @@ public class BoardController {
 
         model.addAttribute("boardData", data);
         model.addAttribute("items", listData.getContent());
-        model.addAttribute("pagination", listData.getPagination());
 
         return utils.tpl("board/view");
     }
@@ -146,7 +144,6 @@ public class BoardController {
 
         ListData<BoardData> data = infoService.getList(search);
         model.addAttribute("items", data.getContent());
-        model.addAttribute("pagination", data.getPagination());
 
         return utils.tpl("board/list");
     }
