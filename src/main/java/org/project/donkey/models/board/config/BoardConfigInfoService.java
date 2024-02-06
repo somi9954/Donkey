@@ -9,8 +9,10 @@ import org.project.donkey.api.admin.BoardSearch;
 import org.project.donkey.commons.ListData;
 import org.project.donkey.commons.Utils;
 import org.project.donkey.commons.constants.BoardAuthority;
+import org.project.donkey.commons.exceptions.BadRequestException;
 import org.project.donkey.configs.jwt.CustomJwtFilter;
 import org.project.donkey.entities.Board;
+import org.project.donkey.entities.QBoard;
 import org.project.donkey.repositories.BoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,13 +34,13 @@ public class BoardConfigInfoService {
     private final HttpServletRequest request;
     private final CustomJwtFilter jwtFilter;
 
-    public Board get(String bId) {
+    public Board get(String bId) throws BoardNotFoundException {
         Board data = repository.findById(bId).orElseThrow(BoardNotFoundException::new);
 
         return data;
     }
 
-    public Board get(String bId, boolean checkAuthority) {
+    public Board get(String bId, boolean checkAuthority) throws BoardNotFoundException {
         Board data = get(bId);
         if (!checkAuthority) {
             return data;
@@ -48,18 +50,18 @@ public class BoardConfigInfoService {
         BoardAuthority authority = data.getAuthority();
         if (authority != BoardAuthority.ALL) {
             if (!jwtFilter.isUserLoggedIn()) {
-                throw new AuthorizationException();
+                throw new BadRequestException(Utils.getMessage("UnAuthorization", "error"));
             }
 
             if (authority == BoardAuthority.ADMIN) {
-                throw new AuthorizationException();
+                throw new BadRequestException(Utils.getMessage("UnAuthorization", "error"));
             }
         }
 
         return data;
     }
 
-    public BoardConfigForm getForm(String bId) {
+    public BoardConfigForm getForm(String bId) throws BoardNotFoundException {
         Board board = get(bId);
 
         BoardConfigForm form = new ModelMapper().map(board, BoardConfigForm.class);
@@ -116,11 +118,8 @@ public class BoardConfigInfoService {
         Page<Board> data = repository.findAll(andBuilder, pageable);
 
 
-        Pagination pagination = new Pagination(page, (int)data.getTotalElements(), 10, limit, request);
-
         ListData<Board> listData = new ListData<>();
         listData.setContent(data.getContent());
-        listData.setPagination(pagination);
 
         return listData;
     }

@@ -1,9 +1,17 @@
 package org.project.donkey.commons.exceptions;
 
-import org.project.donkey.commons.Utils;
+import org.springframework.http.HttpStatus;
 
-public class BadRequestException {
-    public BadRequestException() {
-        super(Utils.getMessage("BadRequest", "error"));
+import java.util.List;
+import java.util.Map;
+
+public class BadRequestException extends CommonException{
+
+    public BadRequestException(Map<String, List<String>> messages) {
+        super(messages, HttpStatus.BAD_REQUEST);
+    }
+
+    public BadRequestException(String message) {
+        super(message, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,14 +1,15 @@
 package org.project.donkey.models.board;
 
 import lombok.RequiredArgsConstructor;
-import org.koreait.commons.MemberUtil;
-import org.koreait.controllers.boards.BoardForm;
-import org.koreait.controllers.boards.BoardFormValidator;
-import org.koreait.entities.Board;
-import org.koreait.entities.BoardData;
-import org.koreait.models.board.config.BoardConfigInfoService;
-import org.koreait.repositories.BoardDataRepository;
-import org.koreait.repositories.FileInfoRepository;
+import org.project.donkey.api.boards.BoardForm;
+import org.project.donkey.api.boards.BoardFormValidator;
+import org.project.donkey.configs.jwt.CustomJwtFilter;
+import org.project.donkey.entities.Board;
+import org.project.donkey.entities.BoardData;
+import org.project.donkey.models.board.config.BoardConfigInfoService;
+import org.project.donkey.models.board.config.BoardNotFoundException;
+import org.project.donkey.repositories.BoardDataRepository;
+import org.project.donkey.repositories.FileInfoRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,21 +22,20 @@ import java.util.Objects;
 public class BoardSaveService {
     private final BoardDataRepository boardDataRepository;
     private final BoardConfigInfoService infoService;
-    private final MemberUtil memberUtil;
+    private final CustomJwtFilter jwtFilter;
     private final PasswordEncoder encoder;
     private final FileInfoRepository fileInfoRepository;
     private final BoardFormValidator validator;
 
-    public void save(BoardForm form, Errors errors) {
+    public void save(BoardForm form, Errors errors) throws BoardDataNotFoundException, BoardNotFoundException {
         validator.validate(form, errors);
         if (errors.hasErrors()) {
             return;
         }
-
         save(form);
     }
 
-    public void save(BoardForm form) {
+    public void save(BoardForm form) throws BoardDataNotFoundException, BoardNotFoundException {
         Long seq = form.getSeq();
         String mode = Objects.requireNonNullElse(form.getMode(), "write");
 
@@ -51,7 +51,7 @@ public class BoardSaveService {
             data = new BoardData();
             data.setBoard(board); // 게시판 bId 최초 글 등록시 한번만 등록
             data.setGid(gid); // 그룹 ID(GID)는 최초 글 등록시 한번만 등록
-            data.setMember(memberUtil.getMember()); // 글 등록 회원 정보도 최초 글등록시 한번
+            data.setMember(jwtFilter.getEntity()); // 글 등록 회원 정보도 최초 글등록시 한번
         }
 
         data.setSubject(form.getSubject());
@@ -60,7 +60,7 @@ public class BoardSaveService {
         data.setCategory(form.getCategory());
 
         // 공지사항 여부 - 관리자만 등록, 수정
-        if (memberUtil.isAdmin()) {
+        if (jwtFilter.isUserAdmin()) {
             data.setNotice(form.isNotice());
         }
 

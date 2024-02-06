@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import java.util.*;
@@ -102,7 +103,7 @@ public class Utils {
         return Objects.hash(ip, ua);
     }
 
-    public static Map<String, List<String>> getMessages(String errors) {
+    public static Map<String, List<String>> getMessages(Errors errors) {
         try {
             Map<String, List<String>> data = new HashMap<>();
             for (FieldError error : errors.getFieldErrors()) {
@@ -126,6 +127,4 @@ public class Utils {
        return str.replaceAll("\\r", "")
                 .replaceAll("\\n", "<br>");
     }
-
-    
 }

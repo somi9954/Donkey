@@ -10,12 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.project.donkey.commons.ListData;
-import org.project.donkey.commons.MemberUtil;
-import org.project.donkey.commons.Pagination;
 import org.project.donkey.commons.Utils;
 import org.project.donkey.configs.jwt.CustomJwtFilter;
-import org.project.donkey.controllers.boards.BoardDataSearch;
-import org.project.donkey.controllers.boards.BoardForm;
 import org.project.donkey.entities.*;
 import org.project.donkey.models.comment.CommentInfoService;
 import org.project.donkey.models.file.FileInfoService;
@@ -24,15 +20,9 @@ import org.project.donkey.repositories.BoardViewRepository;
 import org.modelmapper.ModelMapper;
 import org.project.donkey.api.boards.BoardDataSearch;
 import org.project.donkey.api.boards.BoardForm;
-import org.project.donkey.commons.ListData;
-import org.project.donkey.commons.Utils;
 import org.project.donkey.entities.BoardData;
 import org.project.donkey.entities.BoardView;
 import org.project.donkey.entities.Member;
-import org.project.donkey.models.comment.CommentInfoService;
-import org.project.donkey.models.file.FileInfoService;
-import org.project.donkey.repositories.BoardDataRepository;
-import org.project.donkey.repositories.BoardViewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -101,7 +91,7 @@ public class BoardInfoService {
         boardDataRepository.flush();
     }
 
-    public BoardData get(Long seq) {
+    public BoardData get(Long seq) throws BoardDataNotFoundException {
 
         BoardData data = boardDataRepository.findById(seq).orElseThrow(BoardDataNotFoundException::new);
 
@@ -112,7 +102,7 @@ public class BoardInfoService {
         return data;
     }
 
-    public BoardForm getForm(Long seq) {
+    public BoardForm getForm(Long seq) throws BoardDataNotFoundException {
         BoardData data = get(seq);
         BoardForm form = new ModelMapper().map(data, BoardForm.class);
         form.setMode("update");
@@ -185,14 +175,12 @@ public class BoardInfoService {
 
         int total = (int)boardDataRepository.count(andBuilder);
 
-        Pagination pagination = new Pagination(page, total, 10, limit, request);
 
         // 파일 정보 추가
         items.stream().forEach(this::addFileInfo);
 
         ListData<BoardData> data = new ListData<>();
         data.setContent(items);
-        data.setPagination(pagination);
 
         return data;
     }
@@ -207,8 +195,8 @@ public class BoardInfoService {
         data.setAttachFiles(attachFiles);
     }
 
-    public boolean isMine(Long seq) {
-        if (memberUtill.isAdmin()) { // 관리자는 수정, 삭제 모두 가능
+    public boolean isMine(Long seq) throws RequiredPasswordCheckException, BoardDataNotFoundException {
+        if (customJwtFilter.isUserAdmin()) { // 관리자는 수정, 삭제 모두 가능
             return true;
         }
 
@@ -218,8 +206,8 @@ public class BoardInfoService {
 
          // 회원 등록 게시물이만 직접 작성한 게시글인 경우
             Member boardMember = data.getMember();
-            Member member = memberUtill.getMember();
-            return memberUtill.isLogin() && boardMember.getUserNo().longValue() == member.getUserNo().longValue();
+            Member member = customJwtFilter.getEntity();
+            return customJwtFilter.isUserLoggedIn() && boardMember.getUserNo().longValue() == member.getUserNo().longValue();
         } else { // 비회원 게시글
             // 세션에 chk_게시글번호 항목이 있으면 비번 검증 완료
             String key = "chk_" + seq;
@@ -232,7 +220,7 @@ public class BoardInfoService {
         }
     }
 
-    public boolean checkGuestPassword(Long seq, String password) {
+    public boolean checkGuestPassword(Long seq, String password) throws BoardDataNotFoundException {
         BoardData data = get(seq);
         String guestPw = data.getGuestPw();
         if (!StringUtils.hasText(guestPw)) {

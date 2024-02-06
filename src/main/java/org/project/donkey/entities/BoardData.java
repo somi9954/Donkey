@@ -25,6 +25,10 @@ public class BoardData extends Base {
     @GeneratedValue
     private Long seq;
 
+    @Id
+    @Column(length=50, nullable = false)
+    private String gid = UUID.randomUUID().toString();
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="bId")
     private Board board;
@@ -33,9 +37,8 @@ public class BoardData extends Base {
     @JoinColumn(name="userNo")
     private Member member;
 
-    @Id
-    @Column(length=50, nullable = false)
-    private String gid = UUID.randomUUID().toString();
+    @Column(length=50)
+    private String category;
 
     @Id
     @Column(length=50, nullable = false)
@@ -53,12 +56,17 @@ public class BoardData extends Base {
     @Column(nullable = false)
     private String content;
 
+    private boolean notice; // 공지사항 여부
+
     @Enumerated(EnumType.STRING)
     private MemberType type = MemberType.USER; // 추후 수정
 
     private int viewCnt; // 조회수
 
     private int commentCnt; // 댓글 수
+
+    @Transient
+    private List<CommentData> comments; // 댓글 목록
 
     @Transient
     private List<FileInfo> editorImages;

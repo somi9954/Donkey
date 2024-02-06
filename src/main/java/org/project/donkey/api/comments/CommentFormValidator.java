@@ -1,6 +1,7 @@
 package org.project.donkey.api.comments;
 
 import lombok.RequiredArgsConstructor;
+import org.project.donkey.commons.validators.PasswordValidator;
 import org.project.donkey.configs.jwt.CustomJwtFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

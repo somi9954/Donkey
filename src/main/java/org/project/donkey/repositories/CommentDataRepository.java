@@ -1,8 +1,10 @@
 package org.project.donkey.repositories;
 
 import org.project.donkey.entities.CommentData;
+import org.project.donkey.entities.QCommentData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+
 
 public interface CommentDataRepository extends JpaRepository<CommentData, Long>, QuerydslPredicateExecutor<CommentData> {
 

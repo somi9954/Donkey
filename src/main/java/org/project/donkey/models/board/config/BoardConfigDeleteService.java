@@ -21,7 +21,7 @@ public class BoardConfigDeleteService {
      *
      * @param bId
      */
-    public void delete(String bId) {
+    public void delete(String bId) throws BoardNotFoundException {
         Board board = repository.findById(bId).orElseThrow(BoardNotFoundException::new);
 
         repository.delete(board);

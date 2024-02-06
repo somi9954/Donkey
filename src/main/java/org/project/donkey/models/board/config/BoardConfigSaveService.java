@@ -19,7 +19,7 @@ public class BoardConfigSaveService {
     private final BoardRepository boardRepository;
     private final Utils utils;
 
-    public void save(BoardConfigForm form) {
+    public void save(BoardConfigForm form) throws BoardNotFoundException {
 
         String bId = form.getBId();
         String mode = Objects.requireNonNullElse(form.getMode(), "add");

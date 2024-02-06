@@ -2,10 +2,11 @@ package org.project.donkey.api.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
+import org.project.donkey.commons.exceptions.BadRequestException;
 import org.project.donkey.commons.Utils;
 import org.project.donkey.commons.configs.ConfigInfoService;
 import org.project.donkey.commons.configs.ConfigSaveService;
+import org.project.donkey.commons.rest.JSONData;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -24,25 +25,26 @@ public class BasicConfigController {
 
     @GetMapping
     public ResponseEntity<JSONData> config(Errors errors) {
-        try { commonProcess(errors);
+        try {
+            commonProcess(errors);
 
-        BoardConfigForm form = infoService.get(code, BoardConfigForm.class);
-        form = form == null ? new BoardConfigForm() : form;
+            BoardConfigForm form = infoService.get(code, BoardConfigForm.class);
+            form = form == null ? new BoardConfigForm() : form;
 
-        JSONData jsonData = new JSONData(form);
+            JSONData jsonData = new JSONData(form);
 
-        // ResponseEntity로 감싸서 반환
+            // ResponseEntity로 감싸서 반환
             return ResponseEntity.status(jsonData.getStatus()).body(jsonData);
-    } catch (BadRequestException e) {
-        // BadRequestException이 발생한 경우
-        JSONData errorData = new JSONData();
-        errorData.setSuccess(false);
-        errorData.setMessage(e.getMessage());
-        errorData.setStatus(HttpStatus.BAD_REQUEST);
+        } catch (BadRequestException e) {
+            // BadRequestException이 발생한 경우
+            JSONData errorData = new JSONData();
+            errorData.setSuccess(false);
+            errorData.setMessage(e.getMessage());
+            errorData.setStatus(HttpStatus.BAD_REQUEST);
 
-        return ResponseEntity.badRequest().body(errorData);
+            return ResponseEntity.badRequest().body(errorData);
+        }
     }
-}
 
 
     @PostMapping
@@ -59,7 +61,8 @@ public class BasicConfigController {
     }
 
     private void commonProcess(Errors errors) {
-      if (errors.hasErrors()) {
-          throw new BadRequestException(Utils.getMessages(errors));
-      }
+        if (errors.hasErrors()) {
+            throw new BadRequestException(Utils.getMessages(errors));
+        }
     }
+}
